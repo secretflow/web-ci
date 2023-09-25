@@ -1,0 +1,43 @@
+name: 'CI: JavaScript'
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        type: string
+        description: 'Node version'
+        required: false
+        default: '16.20.x'
+
+permissions:
+  contents: read
+  actions: read # required by nrwl/nx-set-shas
+
+jobs:
+  ci:
+    name: CI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          # fetch the full history for Nx to determine affected projects
+          fetch-depth: 0
+      - name: Set Nx base commit
+        uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: 'main'
+      - name: Setup environment
+        uses: secretflow/web-ci/.github/actions/ci-setup@main
+        with:
+          node-version: ${{ inputs.node-version }}
+      - name: Run checks
+        shell: bash
+        run: |
+          pnpm exec nx affected \
+            -t lint:prettier \
+            -t lint:eslint \
+            -t lint:stylelint \
+            -t typecheck:tsc \
+            -t test:vitest
