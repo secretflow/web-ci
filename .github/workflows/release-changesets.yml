@@ -3,7 +3,8 @@ name: 'Release: Changesets'
 on:
   workflow_call:
     outputs:
-      should-release: ${{ jobs.changesets.outputs.should-release }}
+      should-release:
+        value: ${{ jobs.changesets.outputs.should-release }}
 
 jobs:
   changesets:
