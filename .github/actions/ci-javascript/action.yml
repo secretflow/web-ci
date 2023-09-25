@@ -1,0 +1,35 @@
+name: 'CI: JavaScript'
+description: 'Run JavaScript CI checks'
+
+inputs:
+  node-version:
+    description: 'Node version'
+    required: false
+    default: '16.20.x'
+
+runs:
+  using: composite
+
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        # fetch the full history for Nx to determine affected projects
+        fetch-depth: 0
+    - name: Set Nx base commit
+      uses: nrwl/nx-set-shas@v3
+      with:
+        main-branch-name: 'main'
+    - name: Setup environment
+      uses: ./.github/actions/ci-setup
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Run checks
+      shell: bash
+      run: |
+        pnpm exec nx affected \
+          -t lint:prettier \
+          -t lint:eslint \
+          -t lint:stylelint \
+          -t typecheck:tsc \
+          -t test:vitest
