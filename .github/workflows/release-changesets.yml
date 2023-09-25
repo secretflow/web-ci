@@ -1,10 +1,9 @@
-# https://github.com/sveltejs/kit/blob/32afba695088b946aefe96da75b36de9b0667fbe/.github/workflows/release.yml
-name: 'Code: Release'
+name: 'Release: Changesets'
 
 on:
   workflow_call:
-
-permissions: {}
+    outputs:
+      should-release: ${{ jobs.changesets.outputs.should-release }}
 
 jobs:
   changesets:
@@ -19,7 +18,8 @@ jobs:
       should-release: ${{ steps.changesets.outputs.hasChangesets == 'false' }}
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
           # fetch the full history for changesets to generate changelog
           fetch-depth: 0
@@ -53,45 +53,3 @@ jobs:
           # For changesets/action to create a release PR
           # Comes from wow-actions/use-app-token
           GITHUB_TOKEN: ${{ env.BOT_TOKEN }}
-
-  ci:
-    needs: [changesets]
-    if: |
-      needs.changesets.outputs.should-release == 'true'
-
-    name: Prerelease CI
-    uses: ./.github/workflows/ci.yml
-
-    permissions:
-      contents: read
-      actions: read
-
-  release:
-    needs: [ci]
-    if: |
-      needs.ci.result == 'success'
-
-    name: Release
-    runs-on: ubuntu-latest
-
-    permissions:
-      contents: write # to create tags
-
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - uses: ./.github/actions/ci-setup
-
-      - name: Authenticate with NPM
-        run: npm config set '//registry.npmjs.org/:_authToken' "${{ secrets.NPM_TOKEN }}"
-
-      - name: Publish
-        run: pnpm run release
-        env:
-          HATCH_INDEX_USER: __token__ # For PyPI
-          HATCH_INDEX_AUTH: ${{ secrets.PYPI_TOKEN }}
-
-      - name: Tag
-        run: pnpm exec changeset tag && git push --tags
