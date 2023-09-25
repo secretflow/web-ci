@@ -18,7 +18,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup environment
-        uses: ./.github/actions/ci-setup
+        uses: secretflow/web-ci/.github/actions/ci-setup@main
 
       - name: Authenticate with NPM
         run: npm config set '//registry.npmjs.org/:_authToken' "${{ secrets.NPM_TOKEN }}"
