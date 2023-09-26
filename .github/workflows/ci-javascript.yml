@@ -35,9 +35,4 @@ jobs:
       - name: Run checks
         shell: bash
         run: |
-          pnpm exec nx affected \
-            -t lint:prettier \
-            -t lint:eslint \
-            -t lint:stylelint \
-            -t typecheck:tsc \
-            -t test:vitest
+          pnpm run ci:javascript
