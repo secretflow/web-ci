@@ -29,8 +29,10 @@ jobs:
           HATCH_INDEX_USER: __token__ # For PyPI
           HATCH_INDEX_AUTH: ${{ secrets.PYPI_TOKEN }}
 
-      - name: Create tags
-        run: pnpm exec changeset tag
-
-      - name: Push tags
-        run: git push origin --follow-tags
+      - name: Create and push tags
+        # Use github-actions as user.name and user.email
+        run: |
+          git config user.name $(git --no-pager show -s --format='%an')
+          git config user.email $(git --no-pager show -s --format='%ae')
+          pnpm exec changeset tag
+          git push origin --follow-tags
