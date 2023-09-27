@@ -44,7 +44,8 @@ jobs:
         with:
           # run changeset version to consume all changesets and bump versions
           version: npx changeset version
-          # publish with Nx. won't call changeset publish but does call changeset tag
+          # do nothing. publishing will happen in a separate job
+          # see ./release-publish.yml
           publish: echo 'No changesets. Will publish packages'
           # title of the release PR
           title: 'chore: release'
