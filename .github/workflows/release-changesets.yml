@@ -49,9 +49,7 @@ jobs:
         uses: changesets/action@v1
         with:
           # run changeset version to consume all changesets and bump versions
-          version: |
-            pnpm install --frozen-lockfile
-            pnpm exec changeset version
+          version: pnpm install --frozen-lockfile && pnpm exec changeset version
           # do nothing. publishing will happen in a separate job
           # see ./release-publish.yml
           publish: echo 'No changesets. Will publish packages'
