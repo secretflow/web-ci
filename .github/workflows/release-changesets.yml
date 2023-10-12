@@ -19,6 +19,12 @@ jobs:
       should-release: ${{ steps.changesets.outputs.hasChangesets == 'false' }}
 
     steps:
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: ^8.6.0
+          run_install: false
+
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -43,7 +49,7 @@ jobs:
         uses: changesets/action@v1
         with:
           # run changeset version to consume all changesets and bump versions
-          version: npx changeset version
+          version: pnpm dlx changeset version
           # do nothing. publishing will happen in a separate job
           # see ./release-publish.yml
           publish: echo 'No changesets. Will publish packages'
