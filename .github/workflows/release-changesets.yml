@@ -42,6 +42,10 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
+          # run changeset version to consume all changesets and bump versions
+          version: |
+            npm i -g @changesets/cli
+            npx changeset version
           # do nothing. publishing will happen in a separate job
           # see ./release-publish.yml
           publish: echo 'No changesets. Will publish packages'
