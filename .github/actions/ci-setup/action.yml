@@ -35,7 +35,6 @@ runs:
         python-version: ${{ inputs.python-version }}
         cache: 'pip'
         cache-dependency-path: |
-          requirements.lock
           requirements-dev.lock
 
     - name: Setup Nx cache
@@ -60,8 +59,8 @@ runs:
 
     - name: Install Python dependencies
       shell: bash
-      run: pip install -r requirements.lock -r requirements-dev.lock
+      run: pip install -r requirements-dev.lock
 
     - name: Setup packages
       shell: bash
-      run: pnpm exec nx run-many -t setup
+      run: pnpm run ci:setup
