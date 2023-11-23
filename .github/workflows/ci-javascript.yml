@@ -6,8 +6,11 @@ on:
       node-version:
         type: string
         description: 'Node version'
-        required: false
-        default: '16.20.x'
+        required: true
+      python-version:
+        type: string
+        description: 'Python version'
+        required: true
 
 permissions:
   contents: read
@@ -26,6 +29,7 @@ jobs:
         uses: secretflow/web-ci/.github/actions/ci-setup@main
         with:
           node-version: ${{ inputs.node-version }}
+          python-version: ${{ inputs.python-version }}
 
       - name: Run checks
         shell: bash

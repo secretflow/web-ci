@@ -3,11 +3,14 @@ name: 'CI: Python'
 on:
   workflow_call:
     inputs:
+      node-version:
+        type: string
+        description: 'Node version'
+        required: true
       python-version:
         type: string
         description: 'Python version'
-        required: false
-        default: '3.8.x'
+        required: true
 
 permissions:
   contents: read
@@ -25,6 +28,7 @@ jobs:
       - name: Setup environment
         uses: secretflow/web-ci/.github/actions/ci-setup@main
         with:
+          node-version: ${{ inputs.node-version }}
           python-version: ${{ inputs.python-version }}
 
       - name: Run checks

@@ -4,12 +4,10 @@ description: 'Setup CI environment'
 inputs:
   node-version:
     description: 'Node version'
-    required: false
-    default: '16.20.x'
+    required: true
   python-version:
     description: 'Python version'
-    required: false
-    default: '3.8.x'
+    required: true
 
 runs:
   using: 'composite'
