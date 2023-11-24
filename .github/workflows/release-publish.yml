@@ -19,9 +19,23 @@ jobs:
 
       - name: Setup environment
         uses: secretflow/web-ci/.github/actions/ci-setup@main
+        with:
+          node-version: '18'
+          python-version: '3.8'
 
       - name: Authenticate with NPM
         run: npm config set '//registry.npmjs.org/:_authToken' "${{ secrets.NPM_TOKEN }}"
+
+      - name: Build
+        run: pnpm run ci:build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: |
+            packages/*/dist/**
+            pyprojects/*/dist/**
 
       - name: Publish
         run: pnpm run ci:publish
@@ -36,11 +50,3 @@ jobs:
           git config user.email $(git --no-pager show -s --format='%ae')
           pnpm exec changeset tag
           git push origin --follow-tags
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: artifacts
-          path: |
-            packages/*/dist/**
-            pyprojects/*/dist/**
