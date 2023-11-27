@@ -2,6 +2,20 @@ name: 'Release: Publish'
 
 on:
   workflow_call:
+    inputs:
+      node-version:
+        type: string
+        description: 'Node version'
+        required: true
+      python-version:
+        type: string
+        description: 'Python version'
+        required: true
+    secrets:
+      NPM_TOKEN:
+        required: true
+      PYPI_TOKEN:
+        required: true
 
 jobs:
   publish:
@@ -9,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write # to create tags
+      contents: write # to create releases/tags
 
     steps:
       - name: Checkout
@@ -20,11 +34,8 @@ jobs:
       - name: Setup environment
         uses: secretflow/web-ci/.github/actions/ci-setup@main
         with:
-          node-version: '18'
-          python-version: '3.8'
-
-      - name: Authenticate with NPM
-        run: npm config set '//registry.npmjs.org/:_authToken' "${{ secrets.NPM_TOKEN }}"
+          node-version: ${{ inputs.node-version }}
+          python-version: ${{ inputs.python-version }}
 
       - name: Build
         run: pnpm run ci:build
@@ -36,6 +47,9 @@ jobs:
           path: |
             packages/*/dist/**
             pyprojects/*/dist/**
+
+      - name: Authenticate with NPM
+        run: npm config set '//registry.npmjs.org/:_authToken' "${{ secrets.NPM_TOKEN }}"
 
       - name: Publish
         run: pnpm run ci:publish

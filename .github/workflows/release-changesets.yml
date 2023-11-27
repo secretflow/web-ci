@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write # to create release (changesets/action)
       pull-requests: write # to create pull request (changesets/action)
 
     outputs:
@@ -28,18 +27,7 @@ jobs:
       - name: Setup PNPM
         uses: pnpm/action-setup@v2
         with:
-          version: ^8.6.0
           run_install: true
-
-      # Generate GitHub token for changesets/action
-      # Using https://github.com/secretflow/bot
-      # This allows changesets/action to create a release PR using the bot's identity
-      # Token goes into env. See action for details
-      - name: Generate GitHub token
-        uses: wow-actions/use-app-token@v2
-        with:
-          app_id: ${{ secrets.APP_ID }}
-          private_key: ${{ secrets.PRIVATE_KEY }}
 
       - name: Determine if changesets exist
         # If there are changesets, this step will create a release PR
@@ -59,5 +47,4 @@ jobs:
           commit: 'chore: stage changes for next release'
         env:
           # For changesets/action to create a release PR
-          # Comes from wow-actions/use-app-token
-          GITHUB_TOKEN: ${{ env.BOT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
