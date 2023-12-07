@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
+      contents: write # to push a new branch (changesets/action)
       pull-requests: write # to create pull request (changesets/action)
 
     outputs:
