@@ -30,6 +30,16 @@ jobs:
         with:
           run_install: true
 
+      # Generate GitHub token for changesets/action
+      # Using https://github.com/secretflow/bot
+      # This allows changesets/action to create a release PR using the bot's identity
+      # Token goes into env. See action for details
+      - name: Generate GitHub token
+        uses: wow-actions/use-app-token@v2
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.PRIVATE_KEY }}
+
       - name: Determine if changesets exist
         # If there are changesets, this step will create a release PR
         # If there isn't any changeset, this step will do nothing
@@ -48,4 +58,5 @@ jobs:
           commit: 'chore: stage changes for next release'
         env:
           # For changesets/action to create a release PR
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Comes from wow-actions/use-app-token
+          GITHUB_TOKEN: ${{ env.BOT_TOKEN }}
