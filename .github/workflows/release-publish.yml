@@ -16,6 +16,10 @@ on:
         required: true
       PYPI_TOKEN:
         required: true
+      BOT_APP_ID:
+        required: true
+      BOT_PRIVATE_KEY:
+        required: true
 
 jobs:
   publish:
@@ -57,10 +61,20 @@ jobs:
           HATCH_INDEX_USER: __token__ # For PyPI
           HATCH_INDEX_AUTH: ${{ secrets.PYPI_TOKEN }}
 
+      # Generate GitHub token for changesets/action using secretflow-bot
+      # This allows other actions to assume the bot's identity
+      # when performing Git operations
+      - name: Generate GitHub token
+        id: generate-token
+        uses: wow-actions/use-app-token@v2
+        with:
+          app_id: ${{ secrets.BOT_APP_ID }}
+          private_key: ${{ secrets.BOT_PRIVATE_KEY }}
+
       - name: Create and push tags
         # Use github-actions as user.name and user.email
         run: |
-          git config user.name $(git --no-pager show -s --format='%an')
-          git config user.email $(git --no-pager show -s --format='%ae')
+          git config user.name "${{steps.generate-token.outputs.bot_token}}[bot]"
+          git config user.email "${{steps.generate-token.outputs.bot_token}}[bot]@users.noreply.github.com"
           pnpm exec changeset tag
           git push origin --follow-tags
