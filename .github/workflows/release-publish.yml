@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write # to create releases/tags
+      contents: read
 
     steps:
       - name: Checkout
@@ -78,3 +78,5 @@ jobs:
           git config user.email "${{steps.generate-token.outputs.bot_token}}[bot]@users.noreply.github.com"
           pnpm exec changeset tag
           git push origin --follow-tags
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.bot_token }}
