@@ -61,6 +61,7 @@ jobs:
           # commit message for the release commits
           commit: 'chore: stage changes for next release'
           setupGitUser: false
+          createGithubReleases: false
         env:
           # For changesets/action to create a release PR
           # Comes from wow-actions/use-app-token
