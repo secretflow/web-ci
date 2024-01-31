@@ -42,7 +42,6 @@ runs:
         key: cache-nx-${{ github.ref }}-${{ runner.os }}-${{ inputs.python-version }}-${{ inputs.node-version }}-${{ github.sha }}
         restore-keys: |
           cache-nx-${{ github.ref }}-${{ runner.os }}-${{ inputs.python-version }}-${{ inputs.node-version }}
-          cache-nx-${{ github.ref }}-${{ runner.os }}-${{ inputs.python-version }}-${{ inputs.node-version }}
           cache-nx-${{ github.ref }}-${{ runner.os }}-${{ inputs.python-version }}
           cache-nx-${{ github.ref }}-${{ runner.os }}
           cache-nx-${{ github.ref }}
