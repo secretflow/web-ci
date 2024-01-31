@@ -9,6 +9,7 @@ jobs:
     docker:
       - image: cimg/base:stable
     resource_class: xlarge
+
     parameters:
       platform:
         type: string
@@ -16,9 +17,11 @@ jobs:
       tag:
         type: string
         default: latest
+
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
           name: Build and publish
           command: |
@@ -44,6 +47,7 @@ workflows:
       - devcontainer-publish:
           platform: linux/amd64
           tag: latest
+
   devcontainer-publish-arm64:
     jobs:
       - devcontainer-publish:
