@@ -35,15 +35,7 @@ RUN cargo install --root /root/.cargo rye \
   --tag ${RYE_VERSION} \
   --target $(cat .rust-target)
 
-FROM mcr.microsoft.com/devcontainers/rust:bookworm as devcontainer
-
-RUN apt-get update \
-  && apt-get install -y \
-  sudo \
-  curl \
-  zsh
-
-RUN chsh -s /usr/bin/zsh vscode
+FROM rust:bookworm as devcontainer
 
 COPY --from=tooling /root/.cargo/bin/fnm /usr/local/bin/fnm
 COPY --from=tooling /root/.cargo/bin/rye /usr/local/bin/rye
@@ -51,10 +43,10 @@ COPY --from=tooling /root/.cargo/bin/rye /usr/local/bin/rye
 ARG NODE_VERSION=18
 ARG PYTHON_VERSION=3.8
 
-USER vscode
-WORKDIR /home/vscode
+USER root
+WORKDIR /root
 
-ENV HOME=/home/vscode
+ENV HOME=/root
 ENV FNM_DIR=${HOME}/.fnm
 ENV RYE_HOME=${HOME}/.rye
 
@@ -71,9 +63,3 @@ RUN echo "" >> ${HOME}/.zshrc \
   && echo 'source "$HOME/.rye/env"' >> ${HOME}/.zshrc
 
 RUN npm install -g "pnpm@^8"
-
-WORKDIR /home/vscode/workspace
-
-ENTRYPOINT [ "/usr/bin/zsh" ]
-
-LABEL org.opencontainers.image.description "Dev container image for Web development at SecretFlow"
