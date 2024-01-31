@@ -45,11 +45,19 @@ workflows:
   devcontainer-publish-amd64:
     jobs:
       - devcontainer-publish:
+          filters:
+            branches:
+              only:
+                - main
           platform: linux/amd64
           tag: latest
 
   devcontainer-publish-arm64:
     jobs:
       - devcontainer-publish:
+          filters:
+            branches:
+              only:
+                - main
           platform: linux/arm64
           tag: unstable-arm64
