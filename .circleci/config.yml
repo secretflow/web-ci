@@ -9,31 +9,41 @@ jobs:
     docker:
       - image: cimg/base:stable
     resource_class: xlarge
+    parameters:
+      platform:
+        type: string
+        default: linux/amd64
+      tag:
+        type: string
+        default: latest
     steps:
       - checkout
       - setup_remote_docker
       - run:
           name: Build and publish
           command: |
-            docker buildx create \
-              --name builder \
-              --platform linux/amd64,linux/arm64
-
-            docker buildx build \
+            docker build \
+              --platform=<< parameters.platform >> \
               --build-arg NODE_VERSION=18 \
               --build-arg PYTHON_VERSION=3.8 \
               -f devcontainer.Dockerfile \
               -t secretflow/devcontainer-web:latest \
-              --platform linux/amd64,linux/arm64 --builder=builder \
               --progress=plain \
               .
 
             docker login -u secretflow -p ${DOCKER_DEPLOY_TOKEN}
-            docker push secretflow/devcontainer-web:latest
+            docker push secretflow/devcontainer-web:<< parameters.tag >>
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
-  devcontainer-publish:
+  devcontainer-publish-amd64:
     jobs:
-      - devcontainer-publish
+      - devcontainer-publish:
+          platform: linux/amd64
+          tag: latest
+  devcontainer-publish-arm64:
+    jobs:
+      - devcontainer-publish:
+          platform: linux/arm64
+          tag: unstable-arm64
