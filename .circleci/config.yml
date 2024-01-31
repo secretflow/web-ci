@@ -22,17 +22,19 @@ jobs:
       - run:
           name: Build and publish
           command: |
+            export IMAGE_NAME=secretflow/devcontainer-web:<< parameters.tag >>
+
             docker buildx build \
               --platform=<< parameters.platform >> \
               --build-arg NODE_VERSION=18 \
               --build-arg PYTHON_VERSION=3.8 \
               -f devcontainer.Dockerfile \
-              -t secretflow/devcontainer-web:latest \
+              -t ${IMAGE_NAME} \
               --progress=plain \
               .
 
             docker login -u secretflow -p ${DOCKER_DEPLOY_TOKEN}
-            docker push secretflow/devcontainer-web:<< parameters.tag >>
+            docker push ${IMAGE_NAME}
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
