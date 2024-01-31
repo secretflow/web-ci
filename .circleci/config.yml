@@ -24,7 +24,7 @@ jobs:
               --build-arg PYTHON_VERSION=3.8 \
               -f devcontainer.Dockerfile \
               -t secretflow/devcontainer-web:latest \
-              --platform linux/amd64,linux/arm64 \
+              --platform linux/amd64,linux/arm64 --builder=builder \
               --progress=plain \
               .
 
