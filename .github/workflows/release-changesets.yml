@@ -17,7 +17,8 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read
+      contents: write # to push a new branch (changesets/action)
+      pull-requests: write # to create pull request (changesets/action)
 
     outputs:
       should-release: ${{ steps.changesets.outputs.hasChangesets == 'false' }}
