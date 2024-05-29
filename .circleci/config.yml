@@ -17,6 +17,9 @@ jobs:
       tag:
         type: string
         default: latest
+      python_version:
+        type: string
+        default: '3.8'
 
     steps:
       - checkout
@@ -30,7 +33,7 @@ jobs:
             docker buildx build \
               --platform=<< parameters.platform >> \
               --build-arg NODE_VERSION=18 \
-              --build-arg PYTHON_VERSION=3.8 \
+              --build-arg PYTHON_VERSION=<< parameters.python_version >> \
               -f devcontainer.Dockerfile \
               -t ${IMAGE_NAME} \
               --progress=plain \
@@ -49,15 +52,27 @@ workflows:
             branches:
               only:
                 - main
+          python_version: '3.8'
           platform: linux/amd64
           tag: latest
-
-  devcontainer-publish-arm64:
+  devcontainer-publish-amd64-v2:
     jobs:
       - devcontainer-publish:
           filters:
             branches:
               only:
                 - main
+          python_version: '3.10'
+          platform: linux/amd64
+          tag: amd64-v2
+
+  devcontainer-publish-arm64-v2:
+    jobs:
+      - devcontainer-publish:
+          filters:
+            branches:
+              only:
+                - main
+          python_version: '3.10'
           platform: linux/arm64
-          tag: unstable-arm64
+          tag: arm64-v2
