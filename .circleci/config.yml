@@ -18,8 +18,8 @@ jobs:
         type: string
         default: latest
       python_version:
-        type: double
-        default: 3.8
+        type: string
+        default: '3.8'
 
     steps:
       - checkout
@@ -52,7 +52,7 @@ workflows:
             branches:
               only:
                 - main
-          python_version: 3.8
+          python_version: '3.8'
           platform: linux/amd64
           tag: latest
 
@@ -63,6 +63,6 @@ workflows:
             branches:
               only:
                 - main
-          python_version: 3.10
+          python_version: '3.10'
           platform: linux/arm64
           tag: unstable-arm64
