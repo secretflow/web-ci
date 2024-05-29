@@ -55,8 +55,18 @@ workflows:
           python_version: '3.8'
           platform: linux/amd64
           tag: latest
+  devcontainer-publish-amd64-v2:
+    jobs:
+      - devcontainer-publish:
+          filters:
+            branches:
+              only:
+                - main
+          python_version: '3.10'
+          platform: linux/amd64
+          tag: amd64-v2
 
-  devcontainer-publish-arm64:
+  devcontainer-publish-arm64-v2:
     jobs:
       - devcontainer-publish:
           filters:
@@ -65,4 +75,4 @@ workflows:
                 - main
           python_version: '3.10'
           platform: linux/arm64
-          tag: unstable-arm64
+          tag: arm64-v2
