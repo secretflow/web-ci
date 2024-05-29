@@ -1,7 +1,7 @@
 FROM --platform=$BUILDPLATFORM rust:bookworm as tooling
 
 ARG FNM_VERSION=1.35.1
-ARG RYE_VERSION=0.19.0
+ARG RYE_VERSION=0.34.0
 
 RUN apt-get update \
   && apt-get upgrade -y \
@@ -31,7 +31,7 @@ RUN cargo install --root /root/.cargo fnm \
   --target $(cat .rust-target)
 
 RUN cargo install --root /root/.cargo rye \
-  --git https://github.com/mitsuhiko/rye \
+  --git https://github.com/astral-sh/rye \
   --tag ${RYE_VERSION} \
   --target $(cat .rust-target)
 
