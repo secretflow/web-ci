@@ -52,6 +52,7 @@ workflows:
             branches:
               only:
                 - main
+          python_version: 3.8
           platform: linux/amd64
           tag: latest
 
