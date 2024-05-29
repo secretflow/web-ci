@@ -18,7 +18,7 @@ jobs:
         type: string
         default: latest
       python_version:
-        type: string
+        type: integer
         default: 3.8
 
     steps:
