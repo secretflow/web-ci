@@ -40,6 +40,10 @@ FROM --platform=$TARGETPLATFORM rust:bookworm as devcontainer
 COPY --from=tooling /root/.cargo/bin/fnm /usr/local/bin/fnm
 COPY --from=tooling /root/.cargo/bin/rye /usr/local/bin/rye
 
+RUN echo $TARGETPLATFORM
+RUN file /usr/local/bin/fnm
+RUN file /usr/local/bin/rye
+
 ARG NODE_VERSION=18
 ARG PYTHON_VERSION=3.8
 
