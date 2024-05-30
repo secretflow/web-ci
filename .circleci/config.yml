@@ -8,7 +8,7 @@ jobs:
   devcontainer-publish:
     docker:
       - image: cimg/base:stable
-    resource_class: xlarge
+    resource_class: medium
 
     parameters:
       platform:
@@ -55,6 +55,7 @@ workflows:
           python_version: '3.8'
           platform: linux/amd64
           tag: latest
+
   devcontainer-publish-amd64-v2:
     jobs:
       - devcontainer-publish:

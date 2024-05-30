@@ -35,7 +35,7 @@ RUN cargo install --root /root/.cargo rye \
   --tag ${RYE_VERSION} \
   --target $(cat .rust-target)
 
-FROM rust:bookworm as devcontainer
+FROM --platform=$TARGETPLATFORM rust:bookworm as devcontainer
 
 COPY --from=tooling /root/.cargo/bin/fnm /usr/local/bin/fnm
 COPY --from=tooling /root/.cargo/bin/rye /usr/local/bin/rye
