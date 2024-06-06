@@ -2,16 +2,13 @@
 # See: https://circleci.com/docs/configuration-reference
 version: 2.1
 
-macos:
-  xcode: 14.2.0 # indicate your selected version of Xcode
-resource_class: macos.m1.medium.gen1
-
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
   devcontainer-publish:
     docker:
       - image: cimg/base:stable
+    resource_class: arm.medium
 
     parameters:
       platform:
@@ -48,27 +45,27 @@ jobs:
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
-  devcontainer-publish-amd64:
-    jobs:
-      - devcontainer-publish:
-          filters:
-            branches:
-              only:
-                - main
-          python_version: '3.8'
-          platform: linux/amd64
-          tag: latest
+  # devcontainer-publish-amd64:
+  #   jobs:
+  #     - devcontainer-publish:
+  #         filters:
+  #           branches:
+  #             only:
+  #               - main
+  #         python_version: '3.8'
+  #         platform: linux/amd64
+  #         tag: latest
 
-  devcontainer-publish-amd64-v2:
-    jobs:
-      - devcontainer-publish:
-          filters:
-            branches:
-              only:
-                - main
-          python_version: '3.10'
-          platform: linux/amd64
-          tag: amd64-v2
+  # devcontainer-publish-amd64-v2:
+  #   jobs:
+  #     - devcontainer-publish:
+  #         filters:
+  #           branches:
+  #             only:
+  #               - main
+  #         python_version: '3.10'
+  #         platform: linux/amd64
+  #         tag: amd64-v2
 
   devcontainer-publish-arm64-v2:
     jobs:
