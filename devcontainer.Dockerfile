@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM rust:bookworm as tooling
+FROM --platform=${BUILDPLATFORM} rust:bookworm as tooling
 
 ARG FNM_VERSION=1.35.1
 ARG RYE_VERSION=0.34.0
@@ -35,7 +35,7 @@ RUN cargo install --root /root/.cargo rye \
   --tag ${RYE_VERSION} \
   --target $(cat .rust-target)
 
-FROM --platform=$TARGETPLATFORM rust:bookworm as devcontainer
+FROM --platform=${TARGETPLATFORM} rust:bookworm as devcontainer
 
 COPY --from=tooling /root/.cargo/bin/fnm /usr/local/bin/fnm
 COPY --from=tooling /root/.cargo/bin/rye /usr/local/bin/rye
