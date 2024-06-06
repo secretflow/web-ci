@@ -8,7 +8,7 @@ jobs:
   devcontainer-publish:
     docker:
       - image: cimg/base:stable
-    resource_class: arm.medium
+    resource_class: medium
 
     parameters:
       platform:
@@ -45,27 +45,27 @@ jobs:
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
-  # devcontainer-publish-amd64:
-  #   jobs:
-  #     - devcontainer-publish:
-  #         filters:
-  #           branches:
-  #             only:
-  #               - main
-  #         python_version: '3.8'
-  #         platform: linux/amd64
-  #         tag: latest
+  devcontainer-publish-amd64:
+    jobs:
+      - devcontainer-publish:
+          filters:
+            branches:
+              only:
+                - main
+          python_version: '3.8'
+          platform: linux/amd64
+          tag: latest
 
-  # devcontainer-publish-amd64-v2:
-  #   jobs:
-  #     - devcontainer-publish:
-  #         filters:
-  #           branches:
-  #             only:
-  #               - main
-  #         python_version: '3.10'
-  #         platform: linux/amd64
-  #         tag: amd64-v2
+  devcontainer-publish-amd64-v2:
+    jobs:
+      - devcontainer-publish:
+          filters:
+            branches:
+              only:
+                - main
+          python_version: '3.10'
+          platform: linux/amd64
+          tag: amd64-v2
 
   devcontainer-publish-arm64-v2:
     jobs:
